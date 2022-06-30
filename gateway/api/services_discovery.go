@@ -43,6 +43,7 @@ func (sd *servicesDiscovery) Start(host string) {
 		}
 
 		for _, service := range res.GetServices() {
+			log.Println(service)
 			res, err := c.CheckServiceIsOnline(context.Background(), &services_discovery.CheckServiceIsOnlineRequest{
 				Name: service.GetName(),
 			})

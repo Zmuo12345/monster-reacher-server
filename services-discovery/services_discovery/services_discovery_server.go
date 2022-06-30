@@ -53,16 +53,14 @@ func (sd *servicesDiscoveryServer) HealthCheck(stream ServicesDiscovery_HealthCh
 			log.Printf("the service %s on host %s port %s is closed %s\n", service.Name, service.Host, service.Port, err.Error())
 			break
 		}
-		stream.Send(&HealthCheckResponse{Success: true, Message: "ok"})
 		token = msg.GetToken()
 		service.IsOnline = true
-		log.Println("HealthCheck ", sd.services[msg.GetToken()])
 		log.Printf("the service %s on host %s port %s health check is ok \n", service.Name, service.Host, service.Port)
+		stream.Send(&HealthCheckResponse{Success: true, Message: "ok"})
 	}
 	return nil
 }
 func (sd *servicesDiscoveryServer) CheckServiceIsOnline(ctx context.Context, req *CheckServiceIsOnlineRequest) (*CheckServiceIsOnlineResponse, error) {
-	log.Println("CheckServiceIsOnline ", sd.services)
 	for k := range sd.services {
 		if sd.services[k].GetName() == req.GetName() && sd.services[k].GetIsOnline() {
 			return &CheckServiceIsOnlineResponse{
