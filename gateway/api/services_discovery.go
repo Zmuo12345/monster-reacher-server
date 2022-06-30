@@ -25,7 +25,7 @@ func NewServicesDiscovery() ServicesDiscovery {
 
 func (sd *servicesDiscovery) Start(host string) {
 	for {
-		time.Sleep(2 * time.Second)
+		time.Sleep(3 * time.Second)
 		cc, err := grpc.Dial(host, grpc.WithTransportCredentials(insecure.NewCredentials()))
 
 		if err != nil {
@@ -63,8 +63,9 @@ func (sd *servicesDiscovery) GetServiceInfo(name string) *services_discovery.Ser
 func (sd *servicesDiscovery) updateServicesInfo(service *services_discovery.ServiceInfo) {
 	for _, s := range sd.services {
 		if s.GetHost() == service.GetHost() {
-			s.Host = service.Host
-			s.Name = service.Name
+			s.Host = service.GetHost()
+			s.Name = service.GetName()
+			s.IsOnline = service.GetIsOnline()
 			return
 		}
 	}

@@ -41,7 +41,7 @@ func (hc *healthCheckClient) Start(name string, host string) {
 			if state := cc.GetState(); state == connectivity.Ready {
 				break
 			}
-			time.Sleep(1 * time.Second)
+			time.Sleep(3 * time.Second)
 		}
 	}
 
@@ -53,14 +53,14 @@ func (hc *healthCheckClient) Start(name string, host string) {
 			if state := cc.GetState(); state == connectivity.Ready {
 				break
 			}
-			time.Sleep(1 * time.Second)
+			time.Sleep(3 * time.Second)
 		}
 	}
 
 	stream, token, err := hc.registerToServicesDiscovery(cc)
 	if err != nil {
 		for {
-			time.Sleep(1 * time.Second)
+			time.Sleep(3 * time.Second)
 			stream, token, err = hc.registerToServicesDiscovery(cc)
 			if err == nil {
 				break
@@ -69,7 +69,7 @@ func (hc *healthCheckClient) Start(name string, host string) {
 	}
 
 	for {
-		time.Sleep(1 * time.Second)
+		time.Sleep(3 * time.Second)
 		if stream == nil {
 			cc.Connect()
 			stream, token, _ = hc.registerToServicesDiscovery(cc)
@@ -79,7 +79,7 @@ func (hc *healthCheckClient) Start(name string, host string) {
 		msg, err := stream.Recv()
 		if err != nil {
 			log.Printf("health check is error %s", err.Error())
-			time.Sleep(1 * time.Second)
+			time.Sleep(3 * time.Second)
 			cc.Connect()
 			stream, token, _ = hc.registerToServicesDiscovery(cc)
 			continue
