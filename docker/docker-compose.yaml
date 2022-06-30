@@ -6,15 +6,59 @@ networks:
       config:
         - subnet: 10.1.0.0/24
 services:
+  gateway:
+    build:
+      context: ./manager
+      args:
+        - SERVICE_NAME=gateway
+    container_name: gateway
+    entrypoint: /app/monster-reacher-server/gateway/gateway
+    ports:
+      - 20530:20530
+    environment:
+      - TZ=Asia/Bangkok
+    networks:
+      privnet:
+        ipv4_address: 10.1.0.200
+  services-discovery:
+    build:
+      context: ./manager
+      args:
+        - SERVICE_NAME=services-discovery
+    container_name: services-discovery
+    entrypoint: /app/monster-reacher-server/services-discovery/services-discovery
+    ports:
+      - 20531:20531
+    environment:
+      - TZ=Asia/Bangkok
+    networks:
+      privnet:
+        ipv4_address: 10.1.0.201
+
   microservice-authentication:
     build:
-      context: ./microservice-authentication
+      context: ./microservices
       args:
-        - MONSTER_REACHER_SERVER_PATH=${MONSTER_REACHER_SERVER_PATH}
+        - SERVICE_NAME=authentication
     container_name: microservice-authentication
     entrypoint: /app/monster-reacher-server/microservices/cmd/authentication/authentication
     ports:
       - 20541:20541
+    environment:
+      - TZ=Asia/Bangkok
+    networks:
+      privnet:
+        ipv4_address: 10.1.0.100
+
+  microservice-profile:
+    build:
+      context: ./microservices
+      args:
+        - SERVICE_NAME=profile
+    container_name: microservice-profile
+    entrypoint: /app/monster-reacher-server/microservices/cmd/profile/profile
+    ports:
+      - 20551:20551
     environment:
       - TZ=Asia/Bangkok
     networks:

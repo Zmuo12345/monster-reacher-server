@@ -1,19 +1,19 @@
 {
     "services": {
         "gateway" : {
-            "hosts":["localhost"],
+            "hosts":["10.1.0.200"],
             "ports":[20530]
         },
         "services-discovery" : {
-            "hosts":["localhost"],
+            "hosts":["10.1.0.201"],
             "ports":[20531]
         },
         "authentication" : {
-            "hosts":["localhost"],
+            "hosts":["10.1.0.100"],
             "ports":[20541]
         },
         "profile" : {
-            "hosts":["localhost"],
+            "hosts":["10.1.0.101"],
             "ports":[20551]
         }
     }

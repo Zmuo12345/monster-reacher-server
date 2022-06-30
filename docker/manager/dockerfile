@@ -1,0 +1,22 @@
+FROM golang:1.18-alpine as builder
+
+ARG SERVICE_NAME
+ARG GIT_BRANCH
+ARG GIT_COMMIT
+
+WORKDIR /app
+
+RUN apk update && apk add git
+RUN git clone https://github.com/Zmuo12345/monster-reacher-server.git
+WORKDIR /app/monster-reacher-server
+RUN git fetch
+RUN git pull
+
+WORKDIR /app/monster-reacher-server/${SERVICE_NAME}
+
+RUN go mod download
+RUN go build .
+
+RUN ls
+
+EXPOSE 3000
