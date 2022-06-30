@@ -8,11 +8,11 @@ networks:
 services:
   microservice-authentication:
     build:
-      dockerfile: ./microservice-authentication/dockerfile
+      context: ./microservice-authentication
       args:
         - MONSTER_REACHER_SERVER_PATH=${MONSTER_REACHER_SERVER_PATH}
     container_name: microservice-authentication
-    entrypoint: /app/microservices/cmd/authentication/authentication
+    entrypoint: /app/monster-reacher-server/microservices/cmd/authentication/authentication
     ports:
       - 20541:20541
     environment:
