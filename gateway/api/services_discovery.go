@@ -25,7 +25,7 @@ func NewServicesDiscovery() ServicesDiscovery {
 
 func (sd *servicesDiscovery) Start(host string) {
 	for {
-
+		time.Sleep(2 * time.Second)
 		cc, err := grpc.Dial(host, grpc.WithTransportCredentials(insecure.NewCredentials()))
 
 		if err != nil {
@@ -57,8 +57,6 @@ func (sd *servicesDiscovery) Start(host string) {
 		}
 
 		log.Println(sd.services)
-
-		time.Sleep(5 * time.Second)
 	}
 }
 
