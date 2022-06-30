@@ -21,10 +21,10 @@ func (sd *servicesDiscoveryServer) Register(ctx context.Context, req *RegisterRe
 	for k := range sd.services {
 		if sd.services[k].Host == req.GetHost() && sd.services[k].Port == req.GetPort() {
 			if sd.services[k].Name != req.GetService() {
-				log.Printf("the service on host %s port %s is switching from %s to %s\n", req.GetHost(), req.GetPort(), sd.services[k].Name, req.GetService())
+				log.Printf("the service on host %s is switching from %s to %s\n", req.GetHost(), sd.services[k].Name, req.GetService())
 			}
 			sd.services[k].Name = req.GetService()
-			log.Printf("the service %s on host %s port %s was reconnect \n", req.GetService(), req.GetHost(), req.GetPort())
+			log.Printf("the service %s on host %s was reconnect \n", req.GetService(), req.GetHost())
 			return &RegisterResponse{Token: k}, nil
 		}
 	}
@@ -34,7 +34,7 @@ func (sd *servicesDiscoveryServer) Register(ctx context.Context, req *RegisterRe
 		Host: req.GetHost(),
 		Port: req.GetPort(),
 	}
-	log.Printf("the service %s on host %s port %s was register is success \n", req.GetService(), req.GetHost(), req.GetPort())
+	log.Printf("the service %s on host %s was register is success \n", req.GetService(), req.GetHost())
 	return &RegisterResponse{Token: string(uuid.String())}, nil
 }
 
@@ -45,17 +45,17 @@ func (sd *servicesDiscoveryServer) HealthCheck(stream ServicesDiscovery_HealthCh
 		if _, found := sd.services[msg.GetToken()]; !found {
 			service := sd.services[token]
 			service.IsOnline = false
-			log.Printf("the service %s on host %s port %s is closed %s\n", service.Name, service.Host, service.Port, err.Error())
+			log.Printf("the service %s on host %s is closed %s\n", service.Name, service.Host, err.Error())
 			break
 		}
 		service := sd.services[msg.GetToken()]
 		if err != nil {
-			log.Printf("the service %s on host %s port %s is closed %s\n", service.Name, service.Host, service.Port, err.Error())
+			log.Printf("the service %s on host %s is closed %s\n", service.Name, service.Host, err.Error())
 			break
 		}
 		token = msg.GetToken()
 		service.IsOnline = true
-		log.Printf("the service %s on host %s port %s health check is ok \n", service.Name, service.Host, service.Port)
+		log.Printf("the service %s on host %s health check is ok \n", service.Name, service.Host)
 		stream.Send(&HealthCheckResponse{Success: true, Message: "ok"})
 	}
 	return nil

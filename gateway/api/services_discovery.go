@@ -43,7 +43,7 @@ func (sd *servicesDiscovery) Start(host string) {
 		}
 
 		for _, service := range res.GetServices() {
-			log.Println(service)
+
 			res, err := c.CheckServiceIsOnline(context.Background(), &services_discovery.CheckServiceIsOnlineRequest{
 				Name: service.GetName(),
 			})
@@ -51,7 +51,7 @@ func (sd *servicesDiscovery) Start(host string) {
 				log.Println("check service is online error " + err.Error())
 				continue
 			}
-
+			log.Println(res.GetInfo())
 			if res.GetInfo().GetIsOnline() {
 				sd.services = append(sd.services, res.GetInfo())
 			}

@@ -2,12 +2,14 @@ package healthcheck
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"time"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/connectivity"
 	"google.golang.org/grpc/credentials/insecure"
+	"wartech-studio.com/monster-reacher/libraries/config"
 	"wartech-studio.com/monster-reacher/libraries/healthcheck/services/services_discovery"
 )
 
@@ -27,8 +29,10 @@ func NewHealthCheckClient() HealthCheckClient {
 func (hc *healthCheckClient) Start(name string, host string) {
 	hc.name = name
 	hc.host = host
-
-	cc, err := grpc.Dial(host, grpc.WithTransportCredentials(insecure.NewCredentials()))
+	serviceDiscoveryHost := fmt.Sprintf("%s:%d",
+		config.WartechConfig().Services["services-discovery"].Hosts[0],
+		config.WartechConfig().Services["services-discovery"].Ports[0])
+	cc, err := grpc.Dial(serviceDiscoveryHost, grpc.WithTransportCredentials(insecure.NewCredentials()))
 
 	if err != nil {
 		log.Println("could not connect: ", err)

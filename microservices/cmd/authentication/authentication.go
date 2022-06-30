@@ -21,11 +21,8 @@ var listenHost = fmt.Sprintf("%s:%d",
 
 func main() {
 	server := grpc.NewServer()
-	serviceDiscoveryHost := fmt.Sprintf("%s:%d",
-		config.WartechConfig().Services["services-discovery"].Hosts[0],
-		config.WartechConfig().Services["services-discovery"].Ports[0])
 	healthchecker := healthcheck.NewHealthCheckClient()
-	go healthchecker.Start(SERVICES_NAME, serviceDiscoveryHost)
+	go healthchecker.Start(SERVICES_NAME, listenHost)
 	listener, err := net.Listen("tcp", listenHost)
 	if err != nil {
 		log.Fatal(err)
