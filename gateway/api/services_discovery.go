@@ -53,7 +53,7 @@ func (sd *servicesDiscovery) Start(host string) {
 			}
 			log.Println(res.GetIsOnline())
 			if res.GetIsOnline() {
-				sd.services = append(sd.services, res.GetInfo())
+				sd.updateServicesInfo(service)
 			}
 		}
 
@@ -69,4 +69,16 @@ func (sd *servicesDiscovery) GetServiceInfo(name string) *services_discovery.Ser
 	}
 
 	return nil
+}
+
+func (sd *servicesDiscovery) updateServicesInfo(service *services_discovery.ServiceInfo) {
+	for _, s := range sd.services {
+		if s.GetHost() == service.GetHost() {
+			s.Host = service.Host
+			s.Name = service.Name
+			return
+		}
+	}
+
+	sd.services = append(sd.services, service)
 }
