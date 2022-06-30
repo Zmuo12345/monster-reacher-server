@@ -1,0 +1,32 @@
+{
+	"folders": [
+		{
+			"path": "microservices"
+		},
+		{
+			"path": "libraries"
+		},
+		{
+			"path": "protobuf"
+		},
+		{
+			"path": "gateway"
+		},
+		{
+			"path": "services-discovery"
+		},
+		{
+			"path": "monitor"
+		},
+		{
+			"path": "script"
+		},
+		{
+			"path": "config"
+		},
+		{
+			"path": "docker"
+		}
+	],
+	"settings": {}
+}

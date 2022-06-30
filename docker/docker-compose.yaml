@@ -1,0 +1,22 @@
+version: '1'
+networks:
+  privnet:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.1.0.0/24
+services:
+  microservice-authentication:
+    build:
+      dockerfile: ./microservice-authentication/dockerfile
+      args:
+        - MONSTER_REACHER_SERVER_PATH=${MONSTER_REACHER_SERVER_PATH}
+    container_name: microservice-authentication
+    entrypoint: /app/microservices/cmd/authentication/authentication
+    ports:
+      - 20541:20541
+    environment:
+      - TZ=Asia/Bangkok
+    networks:
+      privnet:
+        ipv4_address: 10.1.0.101

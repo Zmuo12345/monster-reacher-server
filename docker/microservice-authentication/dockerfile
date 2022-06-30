@@ -1,0 +1,17 @@
+FROM golang:1.18-alpine as builder
+
+ARG MONSTER_REACHER_SERVER_PATH
+
+WORKDIR /app
+
+COPY ${MONSTER_REACHER_SERVER_PATH}\microservices microservices
+COPY ${MONSTER_REACHER_SERVER_PATH}\services-discovery services-discovery
+COPY ${MONSTER_REACHER_SERVER_PATH}\libraries libraries
+COPY ${MONSTER_REACHER_SERVER_PATH}\config config
+
+WORKDIR /app/microservices/cmd/authentication
+
+RUN go mod download
+RUN go build .
+
+EXPOSE 3000

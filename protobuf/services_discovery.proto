@@ -1,0 +1,57 @@
+syntax="proto3";
+
+package services_discovery;
+option go_package="./services_discovery";
+
+service ServicesDiscovery {
+    rpc Register(RegisterRequest) returns(RegisterResponse);
+    rpc HealthCheck(stream HealthCheckRequest) returns(stream HealthCheckResponse);
+    rpc CheckServiceIsOnline(CheckServiceIsOnlineRequest) returns(CheckServiceIsOnlineResponse);
+    rpc GetServices(GetServicesRequest) returns(GetServicesresponse);
+    rpc GatewaySocket(stream GatewaySocketRequest) returns(stream GatewaySocketResponse);
+}
+
+message RegisterRequest {
+    string service = 1;
+    string host = 2;
+    string port = 3;
+}
+message RegisterResponse {
+    string token = 1;
+}
+
+message HealthCheckRequest {
+    string token = 1;
+}
+message HealthCheckResponse {
+    bool success = 1;
+    string message = 2;
+}
+
+message CheckServiceIsOnlineRequest {
+    string name = 1;
+}
+message CheckServiceIsOnlineResponse {
+    bool is_online = 1;
+    ServiceInfo info = 2;
+}
+
+message ServiceInfo {
+    string name = 2;
+    string host = 3;
+    string port = 4;
+    bool is_online = 5;
+}
+
+message GetServicesRequest {}
+message GetServicesresponse {
+    repeated ServiceInfo services = 1;
+}
+
+message GatewaySocketRequest {
+
+}
+message GatewaySocketResponse {
+    
+}
+

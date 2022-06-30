@@ -1,0 +1,82 @@
+syntax="proto3";
+
+package profile;
+option go_package="./profile";
+
+service Profile {
+    rpc GetData(GetDataRequest) returns(GetDataResponse);
+    rpc Authentication(AuthenticationRequest) returns(SuccessResponse);
+    rpc AuthenticationByService(AuthenticationByServiceRequest) returns(SuccessResponse);
+    rpc Register(RegisterRequest) returns(SuccessResponse);
+    rpc RegisterByService(RegisterByServiceRequest) returns(SuccessResponse);
+    rpc UserIsValid(UserIsValidRequest) returns(SuccessResponse);
+    rpc NameIsValid(NameIsValidRequest) returns(SuccessResponse);
+    rpc ChangeName(ChangeNameRequest) returns(SuccessResponse);
+    rpc ChangePassword(ChangePasswordRequest) returns(SuccessResponse);
+    rpc AddServiceAuth(AddServiceAuthRequest) returns(SuccessResponse);
+    rpc RemoveServiceAuth(RemoveServiceAuthRequest) returns(SuccessResponse);
+    rpc MergeData(MergeDataRequest) returns(MergeDataResponse);
+}
+
+message GetDataRequest {
+    string id = 1;
+}
+message GetDataResponse {
+    bytes data = 1;
+}
+
+message AuthenticationRequest {
+    string user = 1;
+    string password = 2;
+}
+message AuthenticationByServiceRequest {
+    string name = 1;
+    string id = 2;
+}
+message RegisterRequest {
+    string user = 1;
+    string password = 2;
+    string email = 3;
+}
+message RegisterByServiceRequest {
+    string name = 1;
+    string id = 2;
+}
+message UserIsValidRequest {
+    string user = 1;
+}
+message NameIsValidRequest {
+    string name = 1;
+}
+message ChangeNameRequest {
+    string id = 1;
+    string new_name = 2;
+}
+message ChangePasswordRequest {
+    string id = 1;
+    string new_password = 2;
+    string old_password = 3;
+}
+message AddServiceAuthRequest {
+    string id = 1;
+    string name = 2;
+}
+message RemoveServiceAuthRequest {
+    string id = 1;
+    string name = 2;
+}
+
+message SuccessResponse {
+    bool success = 1;
+}
+
+message MergeDataRequest {
+    string id_a = 1;
+    string id_b = 2;
+}
+message MergeDataResponse {
+    string id = 1;
+}
+
+
+

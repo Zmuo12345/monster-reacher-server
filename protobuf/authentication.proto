@@ -1,0 +1,35 @@
+syntax="proto3";
+
+package authentication;
+option go_package="./authentication";
+
+service Authentication {
+    rpc SignUp(SignUpRequest) returns(SignUpResponse);
+    rpc SignIn(SignInRequest) returns(SignInResponse);
+    rpc SignOut(SignOutRequest) returns(SignOutResponse);
+}
+
+message SignUpRequest {
+    string id = 1;
+    string ip = 2;
+    string platform = 3;
+}
+
+message SignUpResponse {
+    string access_token = 1;
+}
+
+message SignInRequest {
+    string access_token = 1;
+}
+
+message SignInResponse {
+    bool is_valid = 1;
+}
+
+message SignOutRequest {
+    string access_token = 1;
+}
+
+message SignOutResponse {
+}

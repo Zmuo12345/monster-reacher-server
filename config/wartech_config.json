@@ -1,0 +1,20 @@
+{
+    "services": {
+        "gateway" : {
+            "hosts":["localhost"],
+            "ports":[20530]
+        },
+        "services-discovery" : {
+            "hosts":["localhost"],
+            "ports":[20531]
+        },
+        "authentication" : {
+            "hosts":["localhost"],
+            "ports":[20541]
+        },
+        "profile" : {
+            "hosts":["localhost"],
+            "ports":[20551]
+        }
+    }
+}
