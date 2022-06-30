@@ -43,17 +43,7 @@ func (sd *servicesDiscovery) Start(host string) {
 		}
 
 		for _, service := range res.GetServices() {
-
-			res, err := c.CheckServiceIsOnline(context.Background(), &services_discovery.CheckServiceIsOnlineRequest{
-				Name: service.GetName(),
-			})
-			if err != nil {
-				log.Println("check service is online error " + err.Error())
-				continue
-			}
-			if res.GetIsOnline() {
-				sd.updateServicesInfo(service)
-			}
+			sd.updateServicesInfo(service)
 		}
 
 		log.Println(sd.services)
