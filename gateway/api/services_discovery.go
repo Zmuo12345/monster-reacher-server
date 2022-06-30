@@ -26,7 +26,7 @@ func NewServicesDiscovery() ServicesDiscovery {
 func (sd *servicesDiscovery) Start(host string) {
 	for {
 
-		cc, err := grpc.Dial("localhost:20531", grpc.WithTransportCredentials(insecure.NewCredentials()))
+		cc, err := grpc.Dial(host, grpc.WithTransportCredentials(insecure.NewCredentials()))
 
 		if err != nil {
 			log.Println("fetch api error " + err.Error())
