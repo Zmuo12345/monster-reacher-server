@@ -51,7 +51,6 @@ func (sd *servicesDiscovery) Start(host string) {
 				log.Println("check service is online error " + err.Error())
 				continue
 			}
-			log.Println(res.GetIsOnline())
 			if res.GetIsOnline() {
 				sd.updateServicesInfo(service)
 			}
