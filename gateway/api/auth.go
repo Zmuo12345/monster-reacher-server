@@ -2,6 +2,7 @@ package api
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"strings"
@@ -20,7 +21,7 @@ type authApiHandle struct{}
 func RegisterAuthApiHandle(router *mux.Router) *authApiHandle {
 	handler := &authApiHandle{}
 	router.HandleFunc("/api/auth", handler.home)
-	router.HandleFunc("/api/auth/signup", handler.register)
+	router.HandleFunc("/api/auth/register", handler.register)
 	return handler
 }
 
@@ -35,8 +36,16 @@ func (*authApiHandle) register(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	if !checkPostParams(req, []string{"user", "password", "email"}) {
-		res.Write([]byte(`{"success": false ,"message":"please check params user,password,email"}`))
+	type User struct {
+		User     string `json:"user,omitempty" validate:"required"`
+		Password string `json:"password,omitempty" validate:"required"`
+		Email    string `json:"email,omitempty" validate:"required"`
+	}
+
+	user := User{}
+
+	if err := json.NewDecoder(req.Body).Decode(&user); err != nil {
+		res.Write([]byte(fmt.Sprintf(`{"success": false ,"message":"please check params user,password,email or service_name,service_id,service_token","error":%s}`, err.Error())))
 		return
 	}
 
@@ -46,8 +55,6 @@ func (*authApiHandle) register(res http.ResponseWriter, req *http.Request) {
 		res.Write([]byte(`{"success": false ,"message":"serivces is offline"}`))
 		return
 	}
-
-	params := mux.Vars(req)
 
 	// check signup from
 
@@ -63,7 +70,7 @@ func (*authApiHandle) register(res http.ResponseWriter, req *http.Request) {
 
 	cProfile := profile.NewProfileClient(ccProfile)
 
-	result, err := cProfile.UserIsValid(ctx, &profile.UserIsValidRequest{User: params["user"]})
+	result, err := cProfile.UserIsValid(ctx, &profile.UserIsValidRequest{User: user.User})
 
 	if err != nil {
 		res.Write([]byte(fmt.Sprintf(`{"success": false ,"message":"serivces is error %s"}`, err.Error())))
@@ -71,14 +78,14 @@ func (*authApiHandle) register(res http.ResponseWriter, req *http.Request) {
 	}
 
 	if !result.GetSuccess() {
-		res.Write([]byte(fmt.Sprintf(`{"success": false ,"message":"user %s is exist"}`, params["user"])))
+		res.Write([]byte(fmt.Sprintf(`{"success": false ,"message":"user %s is exist"}`, user.User)))
 		return
 	}
 
 	resultRegister, err := cProfile.Register(ctx, &profile.RegisterRequest{
-		User:     params["user"],
-		Password: params["password"],
-		Email:    params["email"],
+		User:     user.User,
+		Password: user.Password,
+		Email:    user.Email,
 	})
 
 	if err != nil {
@@ -87,7 +94,7 @@ func (*authApiHandle) register(res http.ResponseWriter, req *http.Request) {
 	}
 
 	if resultRegister.GetId() == "" {
-		res.Write([]byte(fmt.Sprintf(`{"success": false ,"message":"user %s register fail"}`, params["user"])))
+		res.Write([]byte(fmt.Sprintf(`{"success": false ,"message":"user %s register fail"}`, user.User)))
 		return
 	}
 

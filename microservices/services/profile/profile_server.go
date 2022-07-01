@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"log"
 
 	"wartech-studio.com/monster-reacher/libraries/config"
 	"wartech-studio.com/monster-reacher/libraries/database"
@@ -167,12 +168,13 @@ func (*profileServer) MergeData(ctx context.Context, req *MergeDataRequest) (*Me
 func (*profileServer) mustEmbedUnimplementedProfileServer() {}
 
 func getDriver() database.DBDriver {
+	log.Panicln("getDriver" + config.WartechConfig().Databases["mongodb"].Host)
 	driver, err := database.NewMongoDBDriver(config.WartechConfig().Databases["mongodb"].Host, NAME_DATABASE, NAME_TABLE)
 
 	if err != nil {
 		panic(err)
 	}
-
+	log.Panicln("getDriver success")
 	return driver
 }
 func getProfileData(ctx context.Context, driver database.DBDriver, filter interface{}) (*profileDBSchema, error) {
