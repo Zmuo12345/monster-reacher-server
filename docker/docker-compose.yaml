@@ -11,7 +11,7 @@ services:
       context: ./manager
       args:
         - SERVICE_NAME=gateway
-        - GIT_COMMIT=c4e4b8559bfd622b803b04844bffa72082f738aa
+        - GIT_COMMIT=863853302bc41b7ae5914efb45da3250d9fb2447
     container_name: gateway
     entrypoint: /app/monster-reacher-server/gateway/gateway
     ports:
@@ -26,7 +26,7 @@ services:
       context: ./manager
       args:
         - SERVICE_NAME=services-discovery
-        - GIT_COMMIT=c4e4b8559bfd622b803b04844bffa72082f738aa
+        - GIT_COMMIT=863853302bc41b7ae5914efb45da3250d9fb2447
     container_name: services-discovery
     entrypoint: /app/monster-reacher-server/services-discovery/services-discovery
     ports:
@@ -42,7 +42,7 @@ services:
       context: ./microservices
       args:
         - SERVICE_NAME=authentication
-        - GIT_COMMIT=c4e4b8559bfd622b803b04844bffa72082f738aa
+        - GIT_COMMIT=863853302bc41b7ae5914efb45da3250d9fb2447
     container_name: microservice-authentication
     entrypoint: /app/monster-reacher-server/microservices/cmd/authentication/authentication
     ports:
@@ -58,7 +58,7 @@ services:
       context: ./microservices
       args:
         - SERVICE_NAME=profile
-        - GIT_COMMIT=c4e4b8559bfd622b803b04844bffa72082f738aa
+        - GIT_COMMIT=863853302bc41b7ae5914efb45da3250d9fb2447
     container_name: microservice-profile
     entrypoint: /app/monster-reacher-server/microservices/cmd/profile/profile
     ports:

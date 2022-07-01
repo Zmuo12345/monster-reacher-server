@@ -11,7 +11,7 @@ const PATH_PROJECT = "/app/monster-reacher-server/"
 
 type wartechConfig struct {
 	Services  map[string]wartechConfigServices `json:"services"`
-	Databases map[string]wartechConfigDatabase `json:"database"`
+	Databases map[string]wartechConfigDatabase `json:"databases"`
 }
 
 type wartechConfigServices struct {
