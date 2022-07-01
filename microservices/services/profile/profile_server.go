@@ -65,7 +65,11 @@ func (*profileServer) Register(ctx context.Context, req *RegisterRequest) (*Regi
 		},
 	}
 	result, err := driver.PushOne(ctx, data)
-	return &RegisterResponse{Id: database.MongoDBDecodeResultToID(result)}, err
+	if err != nil {
+		return nil, err
+	}
+	log.Println(result)
+	return &RegisterResponse{Id: database.MongoDBDecodeResultToID(result)}, nil
 }
 func (*profileServer) RegisterByService(ctx context.Context, req *RegisterByServiceRequest) (*RegisterResponse, error) {
 	driver := getDriver()

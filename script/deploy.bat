@@ -1,3 +1,3 @@
 cd ../docker
-docker image prune --filter="dangling=true" -q
+docker image prune --filter="dangling=true"
 docker compose up --force-recreate --build
