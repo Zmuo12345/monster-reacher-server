@@ -6,6 +6,7 @@ import (
 	"net"
 
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/reflection"
 	"wartech-studio.com/monster-reacher/libraries/config"
 	"wartech-studio.com/monster-reacher/libraries/healthcheck"
 	"wartech-studio.com/monster-reacher/microservices/services/authentication"
@@ -30,6 +31,7 @@ func main() {
 	defer listener.Close()
 
 	authentication.RegisterAuthenticationServer(server, authentication.NewAuthenticationServer())
+	reflection.Register(server)
 	log.Println("gRPC server listening on " + listenHost)
 	err = server.Serve(listener)
 	if err != nil {
