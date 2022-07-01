@@ -17,7 +17,7 @@ type profileServer struct{}
 
 type profileDBSchema struct {
 	Name        string              `bson:"name"`
-	ID          string              `bson:"_id"`
+	ID          string              `bson:"_id,omitempty"`
 	Auth        profileAuthDBSchema `bson:"auth"`
 	ServiceAuth map[string]string   `bson:"serviceAuth"`
 }
