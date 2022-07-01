@@ -80,14 +80,14 @@ func (*profileServer) UserIsValid(ctx context.Context, req *UserIsValidRequest) 
 	defer driver.Close()
 	filter := database.MongoDBSelectOneQueryFilterOne("auth.user", req.GetUser())
 	data, err := getProfileData(ctx, driver, filter)
-	return &SuccessResponse{Success: data != nil}, err
+	return &SuccessResponse{Success: data != nil}, nil
 }
 func (*profileServer) NameIsValid(ctx context.Context, req *NameIsValidRequest) (*SuccessResponse, error) {
 	driver := getDriver()
 	defer driver.Close()
 	filter := database.MongoDBSelectOneQueryFilterOne("name", req.GetName())
 	data, err := getProfileData(ctx, driver, filter)
-	return &SuccessResponse{Success: data != nil}, err
+	return &SuccessResponse{Success: data != nil}, nil
 }
 func (*profileServer) ChangeName(ctx context.Context, req *ChangeNameRequest) (*SuccessResponse, error) {
 	driver := getDriver()
