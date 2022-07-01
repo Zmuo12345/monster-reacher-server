@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"log"
 
 	"wartech-studio.com/monster-reacher/libraries/config"
 	"wartech-studio.com/monster-reacher/libraries/database"
@@ -24,6 +25,7 @@ type profileDBSchema struct {
 type profileAuthDBSchema struct {
 	User     string `bson:"user"`
 	Password string `bson:"password"`
+	Email    string `bson:"email"`
 }
 
 func NewProfileServer() ProfileServer {
@@ -59,6 +61,7 @@ func (*profileServer) Register(ctx context.Context, req *RegisterRequest) (*Regi
 		Auth: profileAuthDBSchema{
 			User:     req.GetUser(),
 			Password: req.GetPassword(),
+			Email:    req.GetEmail(),
 		},
 	}
 	result, err := driver.PushOne(ctx, data)
@@ -73,7 +76,11 @@ func (*profileServer) RegisterByService(ctx context.Context, req *RegisterByServ
 		ServiceAuth: serviceAuth,
 	}
 	result, err := driver.PushOne(ctx, data)
-	return &RegisterResponse{Id: database.MongoDBDecodeResultToID(result)}, err
+	if err != nil {
+		return nil, err
+	}
+	log.Println(result)
+	return &RegisterResponse{Id: database.MongoDBDecodeResultToID(result)}, nil
 }
 func (*profileServer) UserIsValid(ctx context.Context, req *UserIsValidRequest) (*SuccessResponse, error) {
 	driver := getDriver()
