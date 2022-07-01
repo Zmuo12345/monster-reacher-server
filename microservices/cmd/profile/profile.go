@@ -9,7 +9,7 @@ import (
 	"google.golang.org/grpc/reflection"
 	"wartech-studio.com/monster-reacher/libraries/config"
 	"wartech-studio.com/monster-reacher/libraries/healthcheck"
-	"wartech-studio.com/monster-reacher/microservices/services/authentication"
+	"wartech-studio.com/monster-reacher/microservices/services/profile"
 )
 
 const SERVICES_NAME = "profile"
@@ -30,7 +30,7 @@ func main() {
 
 	defer listener.Close()
 
-	authentication.RegisterAuthenticationServer(server, authentication.NewAuthenticationServer())
+	profile.RegisterProfileServer(server, profile.NewProfileServer())
 	reflection.Register(server)
 	log.Println("gRPC server listening on " + listenHost)
 	err = server.Serve(listener)
