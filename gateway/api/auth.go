@@ -77,7 +77,7 @@ func (*authApiHandle) register(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	if !result.GetSuccess() {
+	if result.GetSuccess() {
 		res.Write([]byte(fmt.Sprintf(`{"success": false ,"message":"user %s is exist"}`, user.User)))
 		return
 	}
