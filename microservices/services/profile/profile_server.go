@@ -5,10 +5,9 @@ import (
 	"encoding/json"
 	"fmt"
 
+	"wartech-studio.com/monster-reacher/libraries/config"
 	"wartech-studio.com/monster-reacher/libraries/database"
 )
-
-const URI_MONGODB = "mongodb://docker:mongopw@localhost:49153"
 
 const NAME_DATABASE = "user"
 const NAME_TABLE = "profile"
@@ -53,7 +52,7 @@ func (*profileServer) AuthenticationByService(ctx context.Context, req *Authenti
 	data, err := getProfileData(ctx, driver, filter)
 	return &SuccessResponse{Success: data != nil}, err
 }
-func (*profileServer) Register(ctx context.Context, req *RegisterRequest) (*SuccessResponse, error) {
+func (*profileServer) Register(ctx context.Context, req *RegisterRequest) (*RegisterResponse, error) {
 	driver := getDriver()
 	defer driver.Close()
 	data := &profileDBSchema{
@@ -62,10 +61,10 @@ func (*profileServer) Register(ctx context.Context, req *RegisterRequest) (*Succ
 			Password: req.GetPassword(),
 		},
 	}
-	_, err := driver.PushOne(ctx, data)
-	return &SuccessResponse{Success: err == nil}, err
+	result, err := driver.PushOne(ctx, data)
+	return &RegisterResponse{Id: database.MongoDBDecodeResultToID(result)}, err
 }
-func (*profileServer) RegisterByService(ctx context.Context, req *RegisterByServiceRequest) (*SuccessResponse, error) {
+func (*profileServer) RegisterByService(ctx context.Context, req *RegisterByServiceRequest) (*RegisterResponse, error) {
 	driver := getDriver()
 	defer driver.Close()
 	serviceAuth := make(map[string]string)
@@ -73,8 +72,8 @@ func (*profileServer) RegisterByService(ctx context.Context, req *RegisterByServ
 	data := &profileDBSchema{
 		ServiceAuth: serviceAuth,
 	}
-	_, err := driver.PushOne(ctx, data)
-	return &SuccessResponse{Success: err == nil}, err
+	result, err := driver.PushOne(ctx, data)
+	return &RegisterResponse{Id: database.MongoDBDecodeResultToID(result)}, err
 }
 func (*profileServer) UserIsValid(ctx context.Context, req *UserIsValidRequest) (*SuccessResponse, error) {
 	driver := getDriver()
@@ -168,7 +167,7 @@ func (*profileServer) MergeData(ctx context.Context, req *MergeDataRequest) (*Me
 func (*profileServer) mustEmbedUnimplementedProfileServer() {}
 
 func getDriver() database.DBDriver {
-	driver, err := database.NewMongoDBDriver(URI_MONGODB, NAME_DATABASE, NAME_TABLE)
+	driver, err := database.NewMongoDBDriver(config.WartechConfig().Databases["mongodb"].Host, NAME_DATABASE, NAME_TABLE)
 
 	if err != nil {
 		panic(err)

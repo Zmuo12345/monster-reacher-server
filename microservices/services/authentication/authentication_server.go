@@ -8,14 +8,13 @@ import (
 	"log"
 	"time"
 
+	"wartech-studio.com/monster-reacher/libraries/config"
 	"wartech-studio.com/monster-reacher/libraries/database"
 )
 
 const ACCESS_TOKEN_LIFETIME = 5 * time.Minute
 const ACCESS_TOKEN_EXTEND_AFTER = 1 * time.Minute
 const ACCESS_TOKEN_EXTEND_MAX = 6
-
-const URI_MONGODB = "mongodb://docker:mongopw@localhost:49153"
 
 const NAME_DATABASE = "auth"
 const NAME_TABLE = "token"
@@ -123,7 +122,7 @@ func genAccessToken(secretKey string) string {
 }
 
 func getDriver() database.DBDriver {
-	driver, err := database.NewMongoDBDriver(URI_MONGODB, NAME_DATABASE, NAME_TABLE)
+	driver, err := database.NewMongoDBDriver(config.WartechConfig().Databases["mongodb"].Host, NAME_DATABASE, NAME_TABLE)
 
 	if err != nil {
 		panic(err)

@@ -13,6 +13,7 @@ import (
 type ServicesDiscovery interface {
 	Start(host string)
 	GetServiceInfo(name string) *services_discovery.ServiceInfo
+	CheckRequireServices(serviceNames []string) (map[string]*services_discovery.ServiceInfo, bool)
 }
 
 type servicesDiscovery struct {
@@ -22,6 +23,8 @@ type servicesDiscovery struct {
 func NewServicesDiscovery() ServicesDiscovery {
 	return &servicesDiscovery{}
 }
+
+var ServicesDiscoveryCache ServicesDiscovery = NewServicesDiscovery()
 
 func (sd *servicesDiscovery) Start(host string) {
 	for {
@@ -71,4 +74,20 @@ func (sd *servicesDiscovery) updateServicesInfo(service *services_discovery.Serv
 	}
 
 	sd.services = append(sd.services, service)
+}
+
+func (sd *servicesDiscovery) CheckRequireServices(serviceNames []string) (map[string]*services_discovery.ServiceInfo, bool) {
+	requireServices := make(map[string]*services_discovery.ServiceInfo)
+	found := 0
+	for _, name := range serviceNames {
+		for _, service := range sd.services {
+			if service.GetName() == name {
+				requireServices[name] = service
+				found++
+				break
+			}
+		}
+	}
+
+	return requireServices, len(serviceNames) == found
 }

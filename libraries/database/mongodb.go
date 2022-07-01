@@ -71,3 +71,10 @@ func MongoDBDecodeResultToStruct(result interface{}, output interface{}) error {
 	}
 	return nil
 }
+
+func MongoDBDecodeResultToID(result interface{}) string {
+	if _, ok := result.(*mongo.InsertOneResult); ok {
+		return result.(*mongo.InsertOneResult).InsertedID.(primitive.ObjectID).Hex()
+	}
+	return ""
+}

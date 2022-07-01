@@ -16,5 +16,10 @@
             "hosts":["10.1.0.101"],
             "ports":[20551]
         }
+    },
+    "databases": {
+        "mongodb": {
+            "host": "mongodb://docker:mongopw@host.docker.internal:49153"
+        }
     }
 }

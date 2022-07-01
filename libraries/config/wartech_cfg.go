@@ -10,12 +10,17 @@ import (
 const PATH_PROJECT = "/app/monster-reacher-server/"
 
 type wartechConfig struct {
-	Services map[string]wartechConfigServices `json:"services"`
+	Services  map[string]wartechConfigServices `json:"services"`
+	Databases map[string]wartechConfigDatabase `json:"database"`
 }
 
 type wartechConfigServices struct {
 	Hosts []string `json:"hosts"`
 	Ports []int    `json:"ports"`
+}
+
+type wartechConfigDatabase struct {
+	Host string `json:"host"`
 }
 
 var cacheWartechConfig *wartechConfig = initWartechConfig()

@@ -25,9 +25,8 @@ func main() {
 }
 
 func initServicesDiscovery() {
-	servicesDiscovery := api.NewServicesDiscovery()
 	servicesDiscoveryHost := fmt.Sprintf("%s:%d",
 		config.WartechConfig().Services["services-discovery"].Hosts[0],
 		config.WartechConfig().Services["services-discovery"].Ports[0])
-	go servicesDiscovery.Start(servicesDiscoveryHost)
+	go api.ServicesDiscoveryCache.Start(servicesDiscoveryHost)
 }

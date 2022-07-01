@@ -7,8 +7,8 @@ service Profile {
     rpc GetData(GetDataRequest) returns(GetDataResponse);
     rpc Authentication(AuthenticationRequest) returns(SuccessResponse);
     rpc AuthenticationByService(AuthenticationByServiceRequest) returns(SuccessResponse);
-    rpc Register(RegisterRequest) returns(SuccessResponse);
-    rpc RegisterByService(RegisterByServiceRequest) returns(SuccessResponse);
+    rpc Register(RegisterRequest) returns(RegisterResponse);
+    rpc RegisterByService(RegisterByServiceRequest) returns(RegisterResponse);
     rpc UserIsValid(UserIsValidRequest) returns(SuccessResponse);
     rpc NameIsValid(NameIsValidRequest) returns(SuccessResponse);
     rpc ChangeName(ChangeNameRequest) returns(SuccessResponse);
@@ -42,6 +42,10 @@ message RegisterByServiceRequest {
     string name = 1;
     string id = 2;
 }
+message RegisterResponse {
+    string id =1;
+}
+
 message UserIsValidRequest {
     string user = 1;
 }
